@@ -18,4 +18,3 @@ WORKDIR $HOME
 
 ### Gitpod user (2) ###
 USER gitpod
-RUN sudo apt-get update
