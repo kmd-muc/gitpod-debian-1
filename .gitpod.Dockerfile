@@ -1,9 +1,12 @@
 FROM debian:10
 
+# so I can install package without updating sources.list again
+RUN printf "deb http://deb.debian.org/debian buster main contrib non-free\n" \
+            "deb http://security.debian.org/debian-security buster/updates main\n" \
+            "deb http://deb.debian.org/debian buster-updates main"  > /etc/apt/sources.list
+
 RUN apt-get update && \
     apt-get install -yq sudo
-
-RUN printf "deb http://deb.debian.org/debian buster main contrib non-free\ndeb http://security.debian.org/debian-security buster/updates main\ndeb http://deb.debian.org/debian buster-updates main"  > /etc/apt/sources.list
 
 ### Gitpod user ###
 # '-l': see https://docs.docker.com/develop/develop-images/dockerfile_best-practices/#user
