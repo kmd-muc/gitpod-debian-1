@@ -24,3 +24,6 @@ RUN sudo apt-get install -yq curl g++ gcc autoconf automake bison libc6-dev \
         libreadline-dev libssl-dev gnupg2 procps
 RUN gpg2 --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB
 RUN curl -sSL https://get.rvm.io | bash -s stable
+
+### Install postgresql
+RUN sudo apt-get install -yq postgresql postgresql-contrib
