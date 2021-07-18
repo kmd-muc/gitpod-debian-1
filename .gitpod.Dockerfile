@@ -32,4 +32,9 @@ RUN sudo service postgresql start
 
 ### Install ruby 2.7.4
 RUN bash -lc "rvm install 'ruby-2.7.4' && rvm use 2.7.4 --default"
-### Change it to any Ruby you need. supports from ruby 2.4 to 3.0
+
+### Install other rubies
+RUN bash -lc "rvm install 'ruby-2.4'"
+RUN bash -lc "rvm install 'ruby-2.5'"
+RUN bash -lc "rvm install 'ruby-2.6'"
+RUN bash -lc "rvm install 'ruby-3.0'"
