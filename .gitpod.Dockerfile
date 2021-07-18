@@ -31,6 +31,6 @@ RUN sudo service postgresql start
 ### For 1st time: sudo su - postgres then, run psql
 
 ### Install ruby 2.7.4
+RUN bash -lc
 RUN rvm install "ruby-2.7.4"
-
-
+RUN rvm use 2.7.4 --default
