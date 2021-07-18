@@ -21,7 +21,7 @@ USER gitpod
 RUN sudo apt-get install -yq curl g++ gcc autoconf automake bison libc6-dev \
         libffi-dev libgdbm-dev libncurses5-dev libsqlite3-dev libtool \
         libyaml-dev make pkg-config sqlite3 zlib1g-dev libgmp-dev \
-        libreadline-dev libssl-dev gnupg2 procps
+        libreadline-dev libssl-dev gnupg2 procps libpq-dev
 RUN gpg2 --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB
 RUN curl -sSL https://get.rvm.io | bash -s stable
 
@@ -29,5 +29,8 @@ RUN curl -sSL https://get.rvm.io | bash -s stable
 RUN sudo apt-get install -yq postgresql postgresql-contrib
 RUN sudo service postgresql start
 ### For 1st time: sudo su - postgres then, run psql
+
+### Install ruby 2.7.4
+RUN rvm install "ruby-2.7.4"
 
 
