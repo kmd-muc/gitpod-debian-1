@@ -28,5 +28,6 @@ RUN curl -sSL https://get.rvm.io | bash -s stable
 ### Install postgresql
 RUN sudo apt-get install -yq postgresql postgresql-contrib
 RUN sudo service postgresql start
+### For 1st time: sudo su - postgres then, run psql
 
 
