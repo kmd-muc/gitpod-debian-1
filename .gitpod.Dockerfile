@@ -17,24 +17,27 @@ WORKDIR $HOME
 ### Gitpod user (2) ###
 USER gitpod
 
-### Install rvm
+### Install necessary packages
 RUN sudo apt-get install -yq curl g++ gcc autoconf automake bison libc6-dev \
         libffi-dev libgdbm-dev libncurses5-dev libsqlite3-dev libtool \
         libyaml-dev make pkg-config sqlite3 zlib1g-dev libgmp-dev \
-        libreadline-dev libssl-dev gnupg2 procps libpq-dev
+        libreadline-dev libssl-dev gnupg2 procps libpq-dev vim git
+
+### Install rvm
 RUN gpg2 --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB
 RUN curl -sSL https://get.rvm.io | bash -s stable
-
-### Install postgresql
-RUN sudo apt-get install -yq postgresql postgresql-contrib
-RUN sudo service postgresql start
-### For 1st time: sudo su - postgres then, run psql
 
 ### Install ruby 2.7.4
 RUN bash -lc "rvm install 'ruby-2.7.4' && rvm use 2.7.4 --default"
 
-### Install other rubies
-RUN bash -lc "rvm install 'ruby-2.4'"
-RUN bash -lc "rvm install 'ruby-2.5'"
-RUN bash -lc "rvm install 'ruby-2.6'"
-RUN bash -lc "rvm install 'ruby-3.0'"
+### Install Heroku CLI
+RUN curl https://cli-assets.heroku.com/install-ubuntu.sh | sh
+
+### Install PostgreSQL and set it up
+RUN sudo apt-get install -yq postgresql postgresql-contrib
+
+# Adjust PostgreSQL configuration
+# sudo vi /etc/postgresql/11/main/pg_hba.conf
+# change "local all postgres peer"
+# to "local all postgres trust"
+# Restart Postgresql: sudo service postgresql restart
