@@ -27,8 +27,13 @@ RUN sudo apt-get install -yq curl g++ gcc autoconf automake bison libc6-dev \
 RUN gpg2 --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB
 RUN curl -sSL https://get.rvm.io | bash -s stable
 
-### Install ruby 2.7.4
-RUN bash -lc "rvm install 'ruby-2.7.4' && rvm use 2.7.4 --default"
+### Install ruby 2.7.4 and set it as default
+RUN echo "rvm_gems_path=/home/gitpod/.rvm" > ~/.rvmrc
+RUN bash -lc "rvm install ruby-2.7.4 && rvm use ruby-2.7.4 --default"
+RUN echo "rvm_gems_path=/workspace/.rvm" > ~/.rvmrc
+RUN bash -lc "rvm get stable --auto-dotfiles"
+
+ENV GEM_HOME=/workspace/.rvm
 
 ### Install Heroku CLI
 RUN curl https://cli-assets.heroku.com/install-ubuntu.sh | sh
@@ -36,17 +41,20 @@ RUN curl https://cli-assets.heroku.com/install-ubuntu.sh | sh
 ### Install PostgreSQL and set it up
 RUN sudo apt-get install -yq postgresql postgresql-contrib
 
+# Setup PostgreSQL server for user gitpod
+ENV PGDATA="/workspace/.pgsql/data"
+
 USER postgres
 RUN  /etc/init.d/postgresql start &&\
     psql --command "CREATE USER gitpod WITH SUPERUSER PASSWORD 'gitpod';" &&\
-    createdb -O gitpod gitpod
+    createdb -O gitpod -D $PGDATA gitpod
 
 # Adjust PostgreSQL configuration so that remote connections to the
 # database are possible.
 RUN echo "host all  all    0.0.0.0/0  md5" >> /etc/postgresql/11/main/pg_hba.conf
 
 # And add ``listen_addresses`` to ``/etc/postgresql/9.3/main/postgresql.conf``
-RUN echo "listen_addresses='*'" >> /etc/postgresql/11/main/postgresql.conf
+# RUN echo "listen_addresses='*'" >> /etc/postgresql/11/main/postgresql.conf
 
 # Expose the PostgreSQL port
-EXPOSE 5432
+# EXPOSE 5432
