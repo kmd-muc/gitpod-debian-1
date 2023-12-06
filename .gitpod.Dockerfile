@@ -38,23 +38,4 @@ ENV GEM_HOME=/workspace/.rvm
 ### Install Heroku CLI
 RUN curl https://cli-assets.heroku.com/install-ubuntu.sh | sh
 
-### Install PostgreSQL and set it up
-RUN sudo apt-get install -yq postgresql postgresql-contrib
 
-# Setup PostgreSQL server for user gitpod
-ENV PGDATA="/workspace/.pgsql/data"
-
-USER postgres
-RUN  /etc/init.d/postgresql start &&\
-    psql --command "CREATE USER gitpod WITH SUPERUSER PASSWORD 'gitpod';" &&\
-    createdb -O gitpod -D $PGDATA gitpod
-
-# Adjust PostgreSQL configuration so that remote connections to the
-# database are possible.
-RUN echo "host all  all    0.0.0.0/0  md5" >> /etc/postgresql/11/main/pg_hba.conf
-
-# And add ``listen_addresses`` to ``/etc/postgresql/9.3/main/postgresql.conf``
-# RUN echo "listen_addresses='*'" >> /etc/postgresql/11/main/postgresql.conf
-
-# Expose the PostgreSQL port
-# EXPOSE 5432
